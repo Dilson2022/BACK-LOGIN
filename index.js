@@ -24,21 +24,19 @@ app.get('/', (req,res) => {
 })
 
 app.post('/inicio-sesion', (req,res) => {
-    console.log(req.body)
     const {user, password} = req.body
     const values = [user, password]
     const sql = 'select * from login where user = ? and password = ?'
-    console.log('values',values)
+
     conectBD.query(sql, values,(err,result) => {
         if(err) {
-            res.sendStatus(500).send(err)
+            res.status(500).send(err)
         } else {
             if (result.length > 0) {
-                console.log(result)
                 res.status(200).send({
                     "idlogin": result[0].idlogin,
-                    "user": result[0].user,
-                    "password": result[0].password
+                    "user": result[0].user
+                    // "password": result[0].password
                 })
             } else {
                 res.status(400).send('Usuario no existe')
